@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package network;
+
+option go_package = ".;pb";
+
+message Network {
+    uint64 id = 1;
+    string name = 2;
+    string symbol = 3;
+    string rpc = 4;
+    string native_token_symbol = 5;
+    string image_url = 6;
+    string entry_point_address = 7;
+    uint64 pre_verification_gas = 8;
+    uint64 verification_gas_limit = 9;
+    uint64 deploy_fee = 10;
+}
+
+message UpdateNetworkRequest {
+    Network network = 1;
+}
+message UpdateNetworkResponse {
+    Network network = 1;
+}
+message CreateNetworkRequest {
+    Network network = 1;
+} 
+
+message CreateNetworkResponse {
+    Network network = 1;
+}
+
+message GetListNetworkRequest {
+
+}
+
+message GetListNetworkResponse {
+    repeated Network networks = 1;
+}
+
+message GetNetworkDetailRequest {
+    uint64 id = 1;
+}
+
+message DeleteNetworkByIdRequest {
+    uint64 id = 1;
+}
+message DeleteNetworkByIdResponse {
+    bool successful = 1;
+}
+
+service NetworkService {
+    rpc CreateNetwork(CreateNetworkRequest) returns (CreateNetworkResponse) {};
+    rpc GetListNetwork(GetListNetworkRequest) returns (GetListNetworkResponse) {};
+    rpc GetNetworkDetail(GetNetworkDetailRequest) returns (Network){}
+    rpc UpdateNetwork(UpdateNetworkRequest) returns (UpdateNetworkResponse) {}
+    rpc DeleteNetworkById(DeleteNetworkByIdRequest) returns (DeleteNetworkByIdResponse) {}
+}

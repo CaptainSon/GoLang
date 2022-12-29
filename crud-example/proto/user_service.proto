@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = ".;pb";
+
+import "common_message.proto";
+
+message User {
+  uint64 id = 1;
+  string email = 2;
+  string phone_number = 3;
+  string username = 4;
+  bool is_verify = 5;
+  bool enable_2fa = 6;
+  bool is_locked = 7;
+  int64 created_at = 8;
+  int64 updated_at = 9;
+  int64 deleted_at = 10;
+  string role = 11;
+  int64 latest_login = 12;
+}
+
+message CreateUserRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message CreateUserResponse {
+  string uuid = 1;
+}
+
+message VerifyCreateAccountRequest {
+  string email = 1;
+  string code = 2;
+}
+
+message ResendVerifyCodeCreateAccountRequest{
+  string email = 1;
+  string uuid = 2;
+}
+
+message ResendVerifyCodeCreateAccountResponse{
+  bool successful = 1;
+}
+
+message UpdateUserInfoRequest {
+  string phone_number = 1;
+  string username = 2;
+  bool enable_2fa = 3;
+}
+
+message JwtToken {
+  string access_token = 1;
+}
+
+message UpdateUsersRequest {
+  repeated User users = 1;
+}
+
+message UpdateUsersResponse {
+  repeated User users = 1;
+}
+
+message GetListUserRequest {
+  string email = 1;
+  int64 from = 2;
+  int64 to = 3;
+  common.PageRequest pagination = 5;
+}
+
+message GetListUserResponse {
+  repeated User users = 1;
+  common.PageResponse pagination = 2;
+}
+
+message GetUserRequest {
+  User user = 1;
+}
+
+message GetUserResponse {
+  User user = 1;
+}
+
+service UserService {
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {};
+  rpc VerifyCreateAccount(VerifyCreateAccountRequest) returns (JwtToken) {};
+  rpc ResendVerifyCodeCreateAccount(ResendVerifyCodeCreateAccountRequest) returns (common.ExpiryTime) {};
+  rpc UpdateUser(UpdateUserInfoRequest) returns (User) {};
+  rpc UpdateUsers(UpdateUsersRequest) returns (UpdateUsersResponse) {};
+  rpc GetListUser(GetListUserRequest) returns (GetListUserResponse) {};
+  rpc GetUser(GetUserRequest) returns (GetUserResponse) {};
+}

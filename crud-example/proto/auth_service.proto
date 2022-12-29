@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = ".;pb";
+
+import "user_service.proto";
+import "common_message.proto";
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string uuid = 1;
+  uint64 expiry_time = 2;
+  string error = 3;
+}
+
+message Empty {}
+
+message Successful {
+  bool successful = 1;
+}
+
+message VerifyLoginUsingEmailRequest {
+  string email = 1;
+  string code = 2;
+}
+
+message VerifyLoginUsingEmailResponse {
+  string access_token = 1;
+}
+
+message ForgotPasswordRequest {
+  string email = 1;
+}
+
+message VerifyForgotPasswordRequest {
+  string email = 1;
+  string code = 2;
+}
+
+message ResetPasswordRequest {
+  string email = 1;
+  string code = 2;
+  string password = 3;
+  string confirm_password = 4;
+}
+
+message ResendVerifyCodeRequest {
+  string email = 1;
+  string uuid = 2;
+}
+
+message VerifyChangePasswordRequest {
+  string code = 1;
+}
+
+message ResetChangePasswordRequest {
+  string code = 1;
+  string old_password = 2;
+  string new_password = 3;
+  string confirm_new_password = 4;
+}
+
+//message ExpiryTime {
+//  uint64 expiry_time = 1;
+//}
+
+service AuthService {
+  rpc Login(LoginRequest) returns (LoginResponse) {};
+
+  rpc VerifyLoginUsingEmail(VerifyLoginUsingEmailRequest) returns (VerifyLoginUsingEmailResponse) {};
+  rpc AuthMe(Empty) returns (user.User) {};
+  rpc Logout(Empty) returns (Successful) {};
+  rpc ForgotPassword(ForgotPasswordRequest) returns (common.ExpiryTime) {};
+  rpc ChangePassword(Empty) returns (common.ExpiryTime) {};
+  rpc VerifyForgotPassword(VerifyForgotPasswordRequest) returns (Successful) {};
+  rpc VerifyChangePassword(VerifyChangePasswordRequest) returns (Successful) {};
+  rpc ResetPassword(ResetPasswordRequest) returns (Successful) {};
+  rpc ResetChangePassword(ResetChangePasswordRequest) returns (Successful) {};
+  rpc ResendVerifyCodeLogin(ResendVerifyCodeRequest) returns (common.ExpiryTime) {};
+  rpc ResendVerifyCodeForgotPassword(ForgotPasswordRequest) returns (common.ExpiryTime) {};
+  rpc ResendVerifyCodeChangePassword(Empty) returns (common.ExpiryTime) {};
+}

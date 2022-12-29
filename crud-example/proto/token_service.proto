@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package token;
+
+option go_package = ".;pb";
+
+enum TokenType {
+    FEE = 0;
+    ASSET = 1;
+}
+
+message Token {
+    uint64 id = 1;
+    string name = 2;
+    string address = 3;
+    uint64 network_id = 4;
+    double price = 5;
+    uint64 decimals = 6;
+    uint64 user_id = 7;
+    string symbol = 8;
+    TokenType type = 9;
+    bool is_active = 10;
+}
+
+message CreateTokenRequest {
+    Token token = 1;
+}
+
+message CreateTokenResponse {
+    Token token = 1;
+}
+
+message GetListTokenRequest {
+    TokenType type = 1;
+    uint64 network_id = 2;
+};
+
+message GetListTokenResponse{
+    repeated Token tokens = 1;
+};
+
+message DeleteTokenRequest {
+    uint64 id = 1;
+}
+
+message DeleteTokenResponse {
+    bool successful = 1;
+}
+
+message SwitchActiveStatusRequest {
+   uint64 id = 1;
+}
+message SwitchActiveStatusResponse {
+    Token token = 1;
+}
+
+
+message GetListSupportedTokenRequest {}
+message GetListSupportedTokenResponse {
+    string tokens_file = 1;
+}
+
+service TokenService {
+    rpc CreateToken(CreateTokenRequest) returns (CreateTokenResponse) {};
+    rpc GetListToken(GetListTokenRequest) returns (GetListTokenResponse) {};
+    rpc DeleteToken(DeleteTokenRequest) returns (DeleteTokenResponse) {};
+    rpc SwitchActiveStatus(SwitchActiveStatusRequest) returns (SwitchActiveStatusResponse) {};
+    rpc GetListSupportedToken(GetListSupportedTokenRequest) returns (GetListSupportedTokenResponse) {};
+}
