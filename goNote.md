@@ -62,3 +62,13 @@ if ok, err := govalidator.ValidateStruct(user); err != nil {
 	fmt.Print("Struct hợp lệ")
 }
 ```
+
+### Cache
+
+​	là nơi lưu trữ tạp thời cho dữ liệu. phục vụ cho việc truy xuất dữ liệu một cách nhanh chóng.
+
+
+
+### Redis
+
+​	
